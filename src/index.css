@@ -5,14 +5,20 @@ body {
   background-color: #EEE;
   overflow: hidden;
   z-index: 10;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .game-container {
-  z-index: 11;
-  width: 50vw;
-  height: 50vh;
+  width: 75vw;
+  height: 500px;
   position: relative;
-  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #0091c0;
+  border-radius: 30px;
 }
 
 .sky {
@@ -23,15 +29,24 @@ body {
 
 .floor {
   position: absolute;
-  width: 100vw;
+  width: 3000px;
   bottom: 0;
   animation: parallax 10s linear infinite;
 }
 
+.ball {
+  position: absolute;
+  bottom: 110px;
+  right: 5%;
+  animation: ball 2s linear infinite;
+  width: 100px;
+}
+
 .runner {
   position: absolute;
-  bottom: 60px;
-  left: 100px;
+  bottom: 90px;
+  left: 5%;
+  width: 100px;
 }
 
 .clouds {
@@ -44,5 +59,15 @@ body {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes ball {
+  from {
+    right: -500px;
+  }
+
+  to {
+    right: 100%;
   }
 }
