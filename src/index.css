@@ -2,4 +2,47 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #EEE;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.game-container {
+  z-index: 11;
+  width: 50vw;
+  height: 50vh;
+  position: relative;
+  margin: 0 auto;
+}
+
+.sky {
+  height: 40vh;
+  background: rgb(0,146,193);
+  background: linear-gradient(180deg, rgba(0,146,193,1) 0%, rgba(60,31,8,0) 100%);
+}
+
+.floor {
+  position: absolute;
+  width: 100vw;
+  bottom: 0;
+  animation: parallax 10s linear infinite;
+}
+
+.runner {
+  position: absolute;
+  bottom: 60px;
+  left: 100px;
+}
+
+.clouds {
+  display: none;
+}
+
+@keyframes parallax {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
