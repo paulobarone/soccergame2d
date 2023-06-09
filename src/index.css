@@ -38,20 +38,27 @@ body {
 .ball {
   position: absolute;
   bottom: 120px;
-  right: 5%;
   animation: ball 2s linear infinite;
-  width: 100px;
+  right: 5%;
+  z-index: 0;
 }
 
 .runner {
   position: absolute;
   bottom: 90px;
   left: 5%;
-  width: 100px;
+  z-index: 1;
+}
+
+.runner-dead {
+  display: none;
+  position: absolute;
+  left: 5%;
+  bottom: 90px;
 }
 
 .jump {
-  animation: jump 0.75s ease-out;
+  animation: jump 1s ease-out;
 }
 
 .clouds {
@@ -88,6 +95,7 @@ body {
 @keyframes ball {
   from {
     right: -500px;
+    /* right: 500px; */
   }
 
   to {
