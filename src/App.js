@@ -8,6 +8,22 @@ import clouds3 from './public/img/clouds/3.png';
 import clouds4 from './public/img/clouds/4.png';
 
 function App() {
+  
+  const handleJump = () => {
+    if(!document.querySelector('.runner').classList.contains('jump')) {
+      const runnerPerson = document.querySelector('.runner');
+  
+      setTimeout(() => {
+        runnerPerson.classList.remove('jump');
+      }, 1000);
+  
+      runnerPerson.classList.add('jump')
+    }
+  }
+
+  document.addEventListener('keypress', handleJump);
+  document.addEventListener('click', handleJump);
+
   return (
     <section className="game-container">
       <div className="sky"></div>
