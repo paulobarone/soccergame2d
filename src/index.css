@@ -12,7 +12,7 @@ body {
 }
 
 .game-container {
-  width: 75vw;
+  width: 80vw;
   max-width: 1024px;
   height: 500px;
   position: relative;
@@ -32,15 +32,28 @@ body {
   position: absolute;
   width: 3000px;
   bottom: 0;
+}
+
+.floor-animation {
   animation: parallax 10s linear infinite;
 }
 
 .ball {
   position: absolute;
   bottom: 120px;
-  animation: ball 2s linear infinite;
-  right: 5%;
+  right: -500px;
   z-index: 0;
+}
+
+.ball-animation {
+  animation: ball 2s linear infinite;
+}
+
+.ballon {
+  position: absolute;
+  bottom: 200px;
+  left: 50px;
+  width: 300px;
 }
 
 .runner {
@@ -95,7 +108,6 @@ body {
 @keyframes ball {
   from {
     right: -500px;
-    /* right: 500px; */
   }
 
   to {
