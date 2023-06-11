@@ -58,15 +58,8 @@ body {
 .runner {
   position: absolute;
   bottom: 90px;
-  left: 5%;
+  left: 50px;
   z-index: 1;
-}
-
-.runner-dead {
-  display: none;
-  position: absolute;
-  left: 5%;
-  bottom: 90px;
 }
 
 .jump {

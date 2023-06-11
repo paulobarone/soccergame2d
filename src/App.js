@@ -46,15 +46,12 @@ function App() {
 
     if(gameStarted) {
       runnerPerson.src = runner;
+      runnerPerson.style.left = '50px';
       ball.classList.add('ball-animation');
       floor.classList.add('floor-animation');
       clouds1.classList.add('clouds-animation1');
       clouds2.classList.add('clouds-animation2');
     } else {
-      const dataImgGif = 'http://localhost:3000/static/media/runner.e6440defe58f7b0696e1.gif';
-      if(runnerPerson.src === dataImgGif) {
-        runnerPerson.src = dead;
-      }
       runnerPerson.classList.remove('jump');
       ball.classList.remove('ball-animation')
       floor.classList.remove('floor-animation');
@@ -80,8 +77,10 @@ function App() {
     const runnerPersonRight = runnerPerson.offsetLeft + runnerPerson.offsetWidth;
 
     if(runnerPersonBottom >= ballTop && runnerPersonRight >= ballLeft) {
-      setGameStarted(false)
-      clearInterval(check)
+      runnerPerson.src = dead;
+      runnerPerson.style.left = '90px';
+      setGameStarted(false);
+      clearInterval(check);
     }
   }, 10);
 
