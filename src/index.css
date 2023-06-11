@@ -4,7 +4,6 @@ body {
   box-sizing: border-box;
   background-color: #EEE;
   overflow: hidden;
-  z-index: 10;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -75,7 +74,65 @@ body {
 }
 
 .clouds {
-  display: none;
+  width: 120px;
+  position: absolute;
+}
+
+.clouds-container1, .clouds-container2 {
+  width: 100%;
+  transform: translateX(100%);
+  position: absolute;
+}
+
+.clouds-animation1 {
+  display: block;
+  animation: clouds1 40s infinite linear;
+}
+
+.clouds-animation2 {
+  display: block;
+  animation: clouds2 35s infinite linear;
+}
+
+.clouds1 {
+  top: 50px;
+  left: 0%;
+}
+.clouds2 {
+  top: 20px;
+  left: 20%;
+}
+.clouds3 {
+  top: 100px;
+  left: 40%;
+}
+.clouds4 {
+  top: 50px;
+  left: 60%;
+}
+.clouds5 {
+  top: 60px;
+  left: 80%;
+}
+.clouds6 {
+  top: 80px;
+  left: 0%;
+}
+.clouds7 {
+  top: 30px;
+  left: 25%;
+}
+.clouds8 {
+  top: 90px;
+  left: 45%;
+}
+.clouds9 {
+  top: 100px;
+  left: 65%;
+}
+.clouds10 {
+  top: 40px;
+  left: 85%;
 }
 
 @keyframes jump {
@@ -112,5 +169,23 @@ body {
 
   to {
     right: 100%;
+  }
+}
+
+@keyframes clouds1 {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes clouds2 {
+  0% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(-150%);
   }
 }

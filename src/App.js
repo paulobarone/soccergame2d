@@ -8,30 +8,67 @@ import clouds1 from './public/img/clouds/1.png';
 import clouds2 from './public/img/clouds/2.png';
 import clouds3 from './public/img/clouds/3.png';
 import clouds4 from './public/img/clouds/4.png';
+import clouds5 from './public/img/clouds/5.png';
+import clouds6 from './public/img/clouds/6.png';
+import clouds7 from './public/img/clouds/7.png';
+import clouds8 from './public/img/clouds/8.png';
+import clouds9 from './public/img/clouds/9.png';
+import clouds10 from './public/img/clouds/10.png';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [ game, setGame ] = useState(false);
-  
+  const [gameStarted, setGameStarted] = useState(false);
+
   const handleJump = () => {
-    console.log(`handleJump: ${game}`);
-    if(game) {
+    if(gameStarted) {
       const runnerPerson = document.querySelector('.runner');
-      if(!runnerPerson.classList.contains('jump')) {
-        runnerPerson.classList.add('jump')
-    
+      if (!runnerPerson.classList.contains('jump')) {
+        runnerPerson.classList.add('jump');
+
         setTimeout(() => {
           runnerPerson.classList.remove('jump');
         }, 1000);
       }
     } else {
-      startGame()
+      setGameStarted(true);
     }
-  }
+  };
 
   useEffect(() => {
-    console.log(`useEffect: ${game}`)
-  }, [game])
+    const runnerPerson = document.querySelector('.runner');
+    const ball = document.querySelector('.ball');
+    const floor = document.querySelector('.floor');
+    const clouds1 = document.querySelector('.clouds-container1');
+    const clouds2 = document.querySelector('.clouds-container2');
+    const floorPosition = window.getComputedStyle(floor).transform;
+    const clouds1Position = window.getComputedStyle(clouds1).transform;
+    const clouds2Position = window.getComputedStyle(clouds2).transform;
+
+    if(gameStarted) {
+      runnerPerson.src = runner;
+      ball.classList.add('ball-animation');
+      floor.classList.add('floor-animation');
+      clouds1.classList.add('clouds-animation1');
+      clouds2.classList.add('clouds-animation2');
+    } else {
+      const dataImgGif = 'http://localhost:3000/static/media/runner.e6440defe58f7b0696e1.gif';
+      if(runnerPerson.src === dataImgGif) {
+        runnerPerson.src = dead;
+      }
+      runnerPerson.classList.remove('jump');
+      ball.classList.remove('ball-animation')
+      floor.classList.remove('floor-animation');
+      clouds1.classList.remove('clouds-animation1');
+      clouds2.classList.remove('clouds-animation2');
+      floor.style.transform = floorPosition;
+      clouds1.style.transform = clouds1Position;
+      clouds2.style.transform = clouds2Position;
+    }
+  }, [gameStarted]);
+
+  document.addEventListener('keyup', () => {
+    handleJump();
+  });
 
   const check = setInterval(() => {
     const ball = document.querySelector('.ball');
@@ -43,51 +80,33 @@ function App() {
     const runnerPersonRight = runnerPerson.offsetLeft + runnerPerson.offsetWidth;
 
     if(runnerPersonBottom >= ballTop && runnerPersonRight >= ballLeft) {
-      gameOver();
+      setGameStarted(false)
       clearInterval(check)
     }
   }, 10);
 
-  document.addEventListener('keyup', handleJump)
-
-  const gameOver = () => {
-    setGame(false);
-
-    const runnerPerson = document.querySelector('.runner');
-    const ball = document.querySelector('.ball');
-    const floor = document.querySelector('.floor');
-    const floorPosition = window.getComputedStyle(floor).transform;
-
-    runnerPerson.src = dead;
-    runnerPerson.classList.remove('jump');
-    floor.classList.remove('floor-animation');
-    floor.style.transform = floorPosition;
-    ball.classList.remove('ball-animation');
-  }
-
-  const startGame = () => {
-    const runnerPerson = document.querySelector('.runner');
-    const ball = document.querySelector('.ball');
-    const floor = document.querySelector('.floor');
-    
-    runnerPerson.src = runner;
-    ball.classList.add('ball-animation');
-    floor.classList.add('floor-animation');
-
-    return setGame(true);
-  }
-
   return (
     <section className="game-container">
-      <div className="sky"></div>
+      <div className="sky">
+        <div className='clouds-container1'>
+          <img className='clouds clouds1' src={clouds1} alt="nuvem" />
+          <img className='clouds clouds2' src={clouds2} alt="nuvem" />
+          <img className='clouds clouds3' src={clouds3} alt="nuvem" />
+          <img className='clouds clouds4' src={clouds4} alt="nuvem" />
+          <img className='clouds clouds5' src={clouds5} alt="nuvem" />
+        </div>
+        <div className='clouds-container2'>
+          <img className='clouds clouds6' src={clouds6} alt="nuvem" />
+          <img className='clouds clouds7' src={clouds7} alt="nuvem" />
+          <img className='clouds clouds8' src={clouds8} alt="nuvem" />
+          <img className='clouds clouds9' src={clouds9} alt="nuvem" />
+          <img className='clouds clouds10' src={clouds10} alt="nuvem" />
+        </div>
+      </div>
       <img src={floor} alt="floor" className='floor' />
       <img className='runner' src={stay} alt="Runner" />
-      {!game && <img className='ballon' src={ballon} alt="Balão de conversa" />}
+      {!gameStarted && <img className='ballon' src={ballon} alt="Balão de conversa" />}
       <img className='ball' src={ball} alt="Ball" />
-      <img className='clouds clouds1' src={clouds1} alt="clouds" />
-      <img className='clouds clouds2' src={clouds2} alt="clouds" />
-      <img className='clouds clouds3' src={clouds3} alt="clouds" />
-      <img className='clouds clouds4' src={clouds4} alt="clouds" />
     </section>
   );
 }
