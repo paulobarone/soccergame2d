@@ -107,10 +107,12 @@ body {
 
 .start-button {
   width: 200px;
+  top: 0;
   position: absolute;
-  left: 50%;
   transform: translateX(-50%);
-  top: -3px;
+  animation: start-button 2s ease-in-out;
+  left: 50%;
+  cursor: pointer;
 }
 
 .clouds {
@@ -227,5 +229,15 @@ body {
   }
   100% {
     transform: translateX(-150%);
+  }
+}
+
+@keyframes start-button {
+  0% {
+    top: -250px;
+  }
+
+  100% {
+    top: 0px;
   }
 }
