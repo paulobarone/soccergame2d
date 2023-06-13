@@ -1,7 +1,7 @@
 import runner from './public/img/runner.gif';
 import stay from './public/img/stay.png';
 import floor from './public/img/floor.png';
-import startButton from './public/img/start.png';
+import startButton from './public/img/start.gif';
 import ball from './public/img/ball.gif';
 import dead from './public/img/dead.gif';
 import buttonJump from './public/img/button.png';
@@ -32,10 +32,9 @@ function App() {
 
     if(gameStarted) {
       if(!runnerPerson.classList.contains('jump')) {
-        console.log('Jump!')
         runnerPerson.classList.add('jump');
         jumpButton.src = buttonJumpPress;
-  
+
         setTimeout(() => {
           runnerPerson.classList.remove('jump');
           jumpButton.src = buttonJump;
@@ -67,12 +66,13 @@ function App() {
       floor.classList.add('floor-animation');
       clouds1.classList.add('clouds-animation1');
       clouds2.classList.add('clouds-animation2');
-      
+
       setLifes(3);
       setScore(0);
       const interval = setInterval(updateScore, 10);
       return () => clearInterval(interval);
     } else {
+      setCollision(false);
       buttonStart.style.display = 'block';
       buttonJump.style.display = 'none';
       runnerPerson.classList.remove('jump');
@@ -100,7 +100,6 @@ function App() {
     const runnerPersonRight = runnerPerson.offsetLeft + runnerPerson.offsetWidth;
 
     if(runnerPersonBottom >= ballTop && runnerPersonRight >= ballLeft) {
-      console.log('Tocou!');
       setCollision(true);
     }
   }
@@ -108,12 +107,13 @@ function App() {
   useEffect(() => {
     const runnerPerson = document.querySelector('.runner');
     if(collision) {
-      if(lifes >= 1) {
+      if(lifes >= 2) {
         setLifes((prevLifes) => prevLifes - 1);
         setTimeout(() => {
           setCollision(false);
-        }, 1000);
+        }, 500);
       } else {
+        setLifes(0);
         runnerPerson.src = dead;
         runnerPerson.style.left = '90px';
         setGameStarted(false);
