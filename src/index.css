@@ -67,7 +67,29 @@ body {
 }
 
 .ball-animation {
-  animation: ball 2s linear infinite;
+  animation: ball linear infinite;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+.config {
+  cursor: pointer;
+}
+
+.submit-button {
+  position: absolute;
+  bottom: 5px;
+  width: 175px;
+  cursor: pointer;
 }
 
 .ballon {
@@ -97,12 +119,63 @@ body {
   z-index: 1000;
 }
 
+.form-options {
+  position: absolute;
+  background: url('./public/img/options.png') no-repeat;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -25%);
+  z-index: 9999;
+  width: 352px;
+  height: 352px;
+  animation: options-form 0.5s ease-out;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 15px;
+  justify-content: center;
+}
+
+.type-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.values-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.type-container label {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.character-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.character-img {
+  width: 60px;
+}
+
+.selected {
+  color: #e5be57;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
 .score {
   font-size: 12px;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 9999;
 }
 
 .start-button {
@@ -110,7 +183,7 @@ body {
   top: 0;
   position: absolute;
   transform: translateX(-50%);
-  animation: start-button 2s ease-in-out;
+  animation: start-button 1s ease-out;
   left: 50%;
   cursor: pointer;
 }
@@ -239,5 +312,15 @@ body {
 
   100% {
     top: 0px;
+  }
+}
+
+@keyframes options-form {
+  0% {
+    top: -500px;
+  } 
+
+  100% {
+    top: 25%;
   }
 }

@@ -1,11 +1,17 @@
-import runner from './public/img/runner.gif';
-import stay from './public/img/stay.png';
-import floor from './public/img/floor.png';
+
+import runnerPedro from './public/img/runnerPedro.gif';
+import stayPedro from './public/img/stayPedro.gif';
+import deadPedro from './public/img/deadPedro.gif';
+import runnerKadu from './public/img/runnerKadu.gif';
+import stayKadu from './public/img/stayKadu.png';
+import deadKadu from './public/img/deadKadu.gif';
+import floorImg from './public/img/floor.png';
 import startButton from './public/img/start.gif';
 import ball from './public/img/ball.gif';
-import dead from './public/img/dead.gif';
 import buttonJump from './public/img/button.png';
 import buttonJumpPress from './public/img/button-press.png';
+import submitButton from './public/img/submit.png';
+import configImg from './public/img/config.png';
 import heart from './public/img/heart.png';
 import heartBroken from './public/img/heart-broken.png';
 import clouds1 from './public/img/clouds/1.png';
@@ -25,18 +31,21 @@ function App() {
   const [ collision, setCollision ] = useState(false);
   const [ score, setScore ] = useState(0);
   const [ lifes, setLifes ] = useState(3);
-
+  const [ selectedDifficulty, setSelectedDifficulty ] = useState(null);
+  const [ selectedCharacter, setSelectedCharacter ] = useState(null);
+  const [ popupConfig, setPopupConfig ] = useState(false);
+  
   const handleJump = () => {
-    const runnerPerson = document.querySelector('.runner');
+    const runnerCharacter = document.querySelector('.runner');
     const jumpButton = document.querySelector('.jump-button');
 
     if(gameStarted) {
-      if(!runnerPerson.classList.contains('jump')) {
-        runnerPerson.classList.add('jump');
+      if(!runnerCharacter.classList.contains('jump')) {
+        runnerCharacter.classList.add('jump');
         jumpButton.src = buttonJumpPress;
 
         setTimeout(() => {
-          runnerPerson.classList.remove('jump');
+          runnerCharacter.classList.remove('jump');
           jumpButton.src = buttonJump;
         }, 1000);
       }
@@ -46,26 +55,8 @@ function App() {
   };
 
   useEffect(() => {
-    const runnerPerson = document.querySelector('.runner');
-    const ball = document.querySelector('.ball');
-    const floor = document.querySelector('.floor');
-    const clouds1 = document.querySelector('.clouds-container1');
-    const clouds2 = document.querySelector('.clouds-container2');
-    const buttonStart = document.querySelector('.start-button');
-    const buttonJump = document.querySelector('.jump-button');
-    const floorPosition = window.getComputedStyle(floor).transform;
-    const clouds1Position = window.getComputedStyle(clouds1).transform;
-    const clouds2Position = window.getComputedStyle(clouds2).transform;
-
     if(gameStarted) {
-      buttonStart.style.display = 'none';
-      buttonJump.style.display = 'block';
-      runnerPerson.src = runner;
-      runnerPerson.style.left = '50px';
-      ball.classList.add('ball-animation');
-      floor.classList.add('floor-animation');
-      clouds1.classList.add('clouds-animation1');
-      clouds2.classList.add('clouds-animation2');
+      handleAnimations(true);
 
       setLifes(3);
       setScore(0);
@@ -73,10 +64,43 @@ function App() {
       return () => clearInterval(interval);
     } else {
       setCollision(false);
-      buttonStart.style.display = 'block';
-      buttonJump.style.display = 'none';
-      runnerPerson.classList.remove('jump');
-      ball.classList.remove('ball-animation')
+      handleAnimations(false);
+    }
+  }, [gameStarted]);
+
+  const handleDifficulty = (element) => {
+    if(selectedDifficulty === 1) {
+      element.style.animationDuration = '2s';
+    } else if(selectedDifficulty === 2) {
+      element.style.animationDuration = '1.5s';
+    } else if(selectedDifficulty === 3) {
+      element.style.animationDuration = '1.25s';
+    }
+  }
+  
+  const handleAnimations = (event) => {
+    const ball = document.querySelector('.ball');
+    const floor = document.querySelector('.floor');
+    const clouds1 = document.querySelector('.clouds-container1');
+    const clouds2 = document.querySelector('.clouds-container2');
+    const floorPosition = window.getComputedStyle(floor).transform;
+    const clouds1Position = window.getComputedStyle(clouds1).transform;
+    const clouds2Position = window.getComputedStyle(clouds2).transform;
+    const runnerCharacter = document.querySelector('.runner');
+
+    if(event) {
+      runnerCharacter.src = selectedCharacter === 1 ? runnerKadu : runnerPedro;
+      runnerCharacter.style.left = '50px';
+
+      ball.classList.add('ball-animation');
+      handleDifficulty(ball);
+
+      floor.classList.add('floor-animation');
+      clouds1.classList.add('clouds-animation1');
+      clouds2.classList.add('clouds-animation2');
+    } else {
+      runnerCharacter.classList.remove('jump');
+      ball.classList.remove('ball-animation');
       floor.classList.remove('floor-animation');
       clouds1.classList.remove('clouds-animation1');
       clouds2.classList.remove('clouds-animation2');
@@ -84,28 +108,28 @@ function App() {
       clouds1.style.transform = clouds1Position;
       clouds2.style.transform = clouds2Position;
     }
-  }, [gameStarted]);
+  }
 
   useEffect(() => {
     checkCollision();
-  }, [score])
+  }, [score]);
 
   const checkCollision = () => {
     const ball = document.querySelector('.ball');
     const ballTop = ball.offsetTop;
     const ballLeft = ball.offsetLeft;
 
-    const runnerPerson = document.querySelector('.runner');
-    const runnerPersonBottom = runnerPerson.offsetTop + runnerPerson.offsetHeight;
-    const runnerPersonRight = runnerPerson.offsetLeft + runnerPerson.offsetWidth;
+    const runnerCharacter = document.querySelector('.runner');
+    const runnerCharacterBottom = runnerCharacter.offsetTop + runnerCharacter.offsetHeight;
+    const runnerCharacterRight = runnerCharacter.offsetLeft + runnerCharacter.offsetWidth;
 
-    if(runnerPersonBottom >= ballTop && runnerPersonRight >= ballLeft) {
+    if(runnerCharacterBottom >= ballTop && runnerCharacterRight >= ballLeft) {
       setCollision(true);
     }
   }
 
   useEffect(() => {
-    const runnerPerson = document.querySelector('.runner');
+    const runnerCharacter = document.querySelector('.runner');
     if(collision) {
       if(lifes >= 2) {
         setLifes((prevLifes) => prevLifes - 1);
@@ -114,19 +138,61 @@ function App() {
         }, 500);
       } else {
         setLifes(0);
-        runnerPerson.src = dead;
-        runnerPerson.style.left = '90px';
+        runnerCharacter.src = selectedCharacter === 1 ? deadKadu : deadPedro;
+        runnerCharacter.style.left = '90px';
         setGameStarted(false);
       }
     }
-  }, [collision])
+  }, [collision]);
 
   const updateScore = () => {
     setScore((prevScore) => prevScore + 1);
   }
 
+  const handleSelectedDifficulty = (data) => {
+    setSelectedDifficulty(data)
+  }
+
+  const handleSelectedCharacter = (data) => {
+    setSelectedCharacter(data);
+  }
+
   return (
     <section className="game-container">
+      {!gameStarted && popupConfig && 
+      <form className='form-options'>
+        <div className='type-container'>
+          <span>Dificuldade:</span>
+          <div className='values-container'>
+            <div className='radio-container'>
+              <label htmlFor='easy' className={`label ${selectedDifficulty === 1 ? 'selected' : ''}`}>Fácil</label>
+              <input type='radio' name='difficulty' id="easy" onChange={() => handleSelectedDifficulty(1)} />
+            </div>
+            <div className='radio-container'>
+              <label htmlFor='normal' className={`label ${selectedDifficulty === 2 ? 'selected' : ''}`}>Normal</label>
+              <input type='radio' name='difficulty' id="normal" onChange={() => handleSelectedDifficulty(2)} />
+            </div>
+            <div className='radio-container'>
+              <label htmlFor='hard' className={`label ${selectedDifficulty === 3 ? 'selected' : ''}`}>Hard</label>
+              <input type='radio' name='difficulty' id="hard" onChange={() => handleSelectedDifficulty(3)} />
+            </div>
+          </div>
+        </div>
+        <div className='type-container'>
+          <span>Personagem:</span>
+          <div className='values-container'>
+            <div className='character-container'>
+              <label htmlFor='kadu' className={`label ${selectedCharacter === 1 ? 'selected' : ''}`}>Kadu</label>
+              <input type='radio'  name='character' id="kadu" onChange={() => handleSelectedCharacter(1)} />
+            </div>
+            <div className='character-container'>
+              <label htmlFor='pedro' className={`label ${selectedCharacter === 2 ? 'selected' : ''}`}>Pedro</label>
+              <input type='radio' name='character' id="pedro" onChange={() => handleSelectedCharacter(2)} />
+            </div>
+          </div>
+        </div>
+        <img src={submitButton} alt="Enviar" className='submit-button' onClick={() => setPopupConfig(false)} />
+      </form>}
       <div className="sky">
         <div className='clouds-container1'>
           <img className='clouds clouds1' src={clouds1} alt="nuvem" />
@@ -143,16 +209,19 @@ function App() {
           <img className='clouds clouds10' src={clouds10} alt="nuvem" />
         </div>
       </div>
-      <span className='score'>Score: {score}</span>
+      <div className='container'>
+        {!gameStarted && <img src={configImg} onClick={() => setPopupConfig((prevPopup) => !prevPopup)} alt='Configurações' className='config' />}
+        <span className='score'>Score: {score}</span>
+      </div>
       <div className='heart-container'>
         <img src={lifes >= 1 ? heart : heartBroken} alt="Coração" className='heart heart1' />
         <img src={lifes >= 2 ? heart : heartBroken} alt="Coração" className='heart heart2' />
         <img src={lifes === 3 ? heart : heartBroken} alt="Coração" className='heart heart3' />
       </div>
-      <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />
-      <img src={floor} alt="chão" className='floor' />
-      <img className='jump-button' onClick={handleJump} src={buttonJump} alt="Botão para pular" />
-      <img className='runner' src={stay} alt="Runner" />
+      {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
+      {gameStarted && <img className='jump-button' onClick={handleJump} src={buttonJump} alt="Botão para pular" />}
+      <img src={floorImg} alt="chão" className='floor' />
+      <img className='runner' src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
       <img className='ball' src={ball} alt="Ball" />
     </section>
   );
