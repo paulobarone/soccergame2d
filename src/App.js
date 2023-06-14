@@ -31,8 +31,8 @@ function App() {
   const [ collision, setCollision ] = useState(false);
   const [ score, setScore ] = useState(0);
   const [ lifes, setLifes ] = useState(3);
-  const [ selectedDifficulty, setSelectedDifficulty ] = useState(null);
-  const [ selectedCharacter, setSelectedCharacter ] = useState(null);
+  const [ selectedDifficulty, setSelectedDifficulty ] = useState(1);
+  const [ selectedCharacter, setSelectedCharacter ] = useState(1);
   const [ popupConfig, setPopupConfig ] = useState(false);
   
   const handleJump = () => {
