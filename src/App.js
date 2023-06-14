@@ -66,6 +66,7 @@ function App() {
       setCollision(false);
       handleAnimations(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStarted]);
 
   const handleDifficulty = (element) => {
@@ -143,6 +144,7 @@ function App() {
         setGameStarted(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collision]);
 
   const updateScore = () => {
