@@ -39,6 +39,7 @@ function App() {
     if(gameStarted) {
       handleAnimations(true);
 
+      setJumping(false);
       setLifes(3);
       setScore(0);
       const interval = setInterval(updateScore, 10);
