@@ -8,8 +8,6 @@ import deadKadu from './public/img/deadKadu.gif';
 import floorImg from './public/img/floor.png';
 import startButton from './public/img/start.gif';
 import ball from './public/img/ball.gif';
-import buttonJump from './public/img/button.png';
-import buttonJumpPress from './public/img/button-press.png';
 import submitButton from './public/img/submit.png';
 import configImg from './public/img/config.png';
 import heart from './public/img/heart.png';
@@ -27,6 +25,7 @@ import clouds10 from './public/img/clouds/10.png';
 import { useEffect, useState } from 'react';
 
 function App() {
+  const [ jumpAnimation, setJumpAnimation] = useState(false);
   const [ gameStarted, setGameStarted ] = useState(false);
   const [ collision, setCollision ] = useState(false);
   const [ score, setScore ] = useState(0);
@@ -34,27 +33,9 @@ function App() {
   const [ selectedDifficulty, setSelectedDifficulty ] = useState(1);
   const [ selectedCharacter, setSelectedCharacter ] = useState(1);
   const [ popupConfig, setPopupConfig ] = useState(false);
-  
-  const handleJump = () => {
-    const runnerCharacter = document.querySelector('.runner');
-    const jumpButton = document.querySelector('.jump-button');
-
-    if(gameStarted) {
-      if(!runnerCharacter.classList.contains('jump')) {
-        runnerCharacter.classList.add('jump');
-        jumpButton.src = buttonJumpPress;
-
-        setTimeout(() => {
-          runnerCharacter.classList.remove('jump');
-          jumpButton.src = buttonJump;
-        }, 1000);
-      }
-    } else {
-      setGameStarted(true);
-    }
-  };
 
   useEffect(() => {
+    console.log(gameStarted)
     if(gameStarted) {
       handleAnimations(true);
 
@@ -112,6 +93,16 @@ function App() {
   }
 
   useEffect(() => {
+    const runnerCharacter = document.querySelector('.runner');
+    if(jumpAnimation) {
+      runnerCharacter.addEventListener('animationend', () => {
+        runnerCharacter.classList.remove('jump');
+        setJumpAnimation(false);
+      })
+    }
+  }, [jumpAnimation])
+
+  useEffect(() => {
     checkCollision();
   }, [score]);
 
@@ -146,6 +137,22 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collision]);
+
+  useEffect(() => {
+    const handleJump = (event) => {
+      const runnerCharacter = document.querySelector('.runner');
+      if (gameStarted && !jumpAnimation && event.code === 'Space') {
+        runnerCharacter.classList.add('jump');
+        setJumpAnimation(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleJump);
+
+    return () => {
+      document.removeEventListener('keydown', handleJump);
+    };
+  }, [gameStarted, jumpAnimation]);
 
   const updateScore = () => {
     setScore((prevScore) => prevScore + 1);
@@ -221,7 +228,6 @@ function App() {
         <img src={lifes === 3 ? heart : heartBroken} alt="Coração" className='heart heart3' />
       </div>
       {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
-      {gameStarted && <img className='jump-button' onClick={handleJump} src={buttonJump} alt="Botão para pular" />}
       <img src={floorImg} alt="chão" className='floor' />
       <img className='runner' src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
       <img className='ball' src={ball} alt="Ball" />
