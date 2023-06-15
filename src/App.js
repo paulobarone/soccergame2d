@@ -72,7 +72,8 @@ function App() {
 
     if(event) {
       runnerCharacter.src = selectedCharacter === 1 ? runnerKadu : runnerPedro;
-      runnerCharacter.style.left = '50px';
+      runnerCharacter.style.left = '80px';
+      runnerCharacter.style.width = '150px';
 
       ball.classList.add('ball-animation');
       handleDifficulty(ball);
@@ -131,7 +132,8 @@ function App() {
       } else {
         setLifes(0);
         runnerCharacter.src = selectedCharacter === 1 ? deadKadu : deadPedro;
-        runnerCharacter.style.left = '90px';
+        runnerCharacter.style.left = '120px';
+        runnerCharacter.style.width = '110px';
         setGameStarted(false);
       }
     }
@@ -192,10 +194,16 @@ function App() {
           <div className='values-container'>
             <div className='character-container'>
               <label htmlFor='kadu' className={`label ${selectedCharacter === 1 ? 'selected' : ''}`}>Kadu</label>
-              <input type='radio'  name='character' id="kadu" onChange={() => handleSelectedCharacter(1)} />
+              <label htmlFor='kadu' className='label'>
+                <img src={runnerKadu} alt="Runner Kadu" className={`runnerSelected ${selectedCharacter === 1 ? 'selected-character' : ''}`} />
+              </label>
+              <input type='radio' name='character' id="kadu" onChange={() => handleSelectedCharacter(1)} />
             </div>
             <div className='character-container'>
               <label htmlFor='pedro' className={`label ${selectedCharacter === 2 ? 'selected' : ''}`}>Pedro</label>
+              <label htmlFor='pedro' className='label'>
+                <img src={runnerPedro} alt="Runner Kadu" className={`runnerSelected ${selectedCharacter === 2 ? 'selected-character' : ''}`} />
+              </label>
               <input type='radio' name='character' id="pedro" onChange={() => handleSelectedCharacter(2)} />
             </div>
           </div>

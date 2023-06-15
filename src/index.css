@@ -20,15 +20,11 @@ body {
 }
 
 .game-container {
-  width: 80vw;
-  max-width: 1024px;
+  width: 100vw;
   height: 100vh;
-  max-height: 500px;
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
   border: 1px solid #0091c0;
-  border-radius: 30px;
 }
 
 .sky {
@@ -38,7 +34,7 @@ body {
 }
 
 .heart {
-  width: 30px;
+  width: 60px;
 }
 
 .heart-container {
@@ -46,13 +42,13 @@ body {
   gap: 5px;
   z-index: 9999;
   position: absolute;
-  top: 13px;
+  top: 20px;
   right: 20px;
 }
 
 .floor {
   position: absolute;
-  width: 3000px;
+  width: 5000px;
   bottom: 0;
 }
 
@@ -62,7 +58,8 @@ body {
 
 .ball {
   position: absolute;
-  bottom: 120px;
+  width: 90px;
+  bottom: 200px;
   right: -500px;
   z-index: 0;
 }
@@ -82,14 +79,19 @@ body {
   z-index: 9999;
 }
 
+.runnerSelected {
+  width: 75px;
+}
+
 .config {
   cursor: pointer;
+  width: 80px;
 }
 
 .submit-button {
   position: absolute;
-  bottom: 5px;
-  width: 175px;
+  bottom: -10px;
+  width: 220px;
   cursor: pointer;
 }
 
@@ -102,9 +104,10 @@ body {
 
 .runner {
   position: absolute;
-  bottom: 90px;
+  bottom: 150px;
   left: 50px;
   z-index: 1;
+  width: 150px;
 }
 
 .jump {
@@ -123,18 +126,19 @@ body {
 .form-options {
   position: absolute;
   background: url('./public/img/options.png') no-repeat;
+  background-size: cover;
   left: 50%;
   top: 25%;
   transform: translate(-50%, -25%);
   z-index: 9999;
-  width: 352px;
-  height: 352px;
+  width: 487px;
+  height: 457px;
   animation: options-form 0.5s ease-out;
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 40px;
-  padding-top: 15px;
+  padding-top: 30px;
   justify-content: center;
 }
 
@@ -142,7 +146,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .values-container {
@@ -154,6 +158,8 @@ body {
 .type-container label {
   cursor: pointer;
   font-size: 14px;
+  min-width: 75px;
+  text-align: center;
 }
 
 .character-container {
@@ -171,26 +177,30 @@ body {
   color: #e5be57;
 }
 
+.selected-character {
+  border: 1px solid #e5be57;
+}
+
 input[type="radio"] {
   display: none;
 }
 
 .score {
-  font-size: 12px;
+  font-size: 18px;
 }
 
 .start-button {
-  width: 200px;
-  top: 0;
+  width: 300px;
   position: absolute;
   transform: translateX(-50%);
   animation: start-button 1s ease-out;
+  top: 0;
   left: 50%;
   cursor: pointer;
 }
 
 .clouds {
-  width: 120px;
+  width: 190px;
   position: absolute;
 }
 
@@ -211,61 +221,61 @@ input[type="radio"] {
 }
 
 .clouds1 {
-  top: 50px;
+  top: 250px;
   left: 0%;
 }
 .clouds2 {
-  top: 20px;
+  top: 150px;
   left: 20%;
 }
 .clouds3 {
-  top: 100px;
+  top: 220px;
   left: 40%;
 }
 .clouds4 {
-  top: 50px;
+  top: 100px;
   left: 60%;
 }
 .clouds5 {
-  top: 60px;
+  top: 170px;
   left: 80%;
 }
 .clouds6 {
-  top: 80px;
+  top: 100px;
   left: 0%;
 }
 .clouds7 {
-  top: 30px;
+  top: 80px;
   left: 25%;
 }
 .clouds8 {
-  top: 90px;
+  top: 120px;
   left: 45%;
 }
 .clouds9 {
-  top: 100px;
+  top: 130px;
   left: 65%;
 }
 .clouds10 {
-  top: 40px;
+  top: 230px;
   left: 85%;
 }
 
 @keyframes jump {
   0% {
-    bottom: 90px;
+    bottom: 150px;
   }
 
   40% {
-    bottom: 225px;
+    bottom: 350px;
   }
 
   60% {
-    bottom: 225px;
+    bottom: 350px;
   }
 
   100% {
-    bottom: 90px;
+    bottom: 150px;
   }
 }
 
@@ -323,5 +333,27 @@ input[type="radio"] {
 
   100% {
     top: 25%;
+  }
+}
+
+@keyframes set-damage {
+  0% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0.75;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  75% {
+    opacity: 0.75;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
