@@ -1,4 +1,3 @@
-
 import runnerPedro from './public/img/runnerPedro.gif';
 import stayPedro from './public/img/stayPedro.gif';
 import deadPedro from './public/img/deadPedro.gif';
