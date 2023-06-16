@@ -5,7 +5,7 @@ import deadPedro from './public/img/deadPedro.gif';
 import runnerKadu from './public/img/runnerKadu.gif';
 import stayKadu from './public/img/stayKadu.png';
 import deadKadu from './public/img/deadKadu.gif';
-import floorImg from './public/img/floor.png';
+import floor from './public/img/floor.png';
 import startButton from './public/img/start.gif';
 import ball from './public/img/ball.gif';
 import submitButton from './public/img/submit.png';
@@ -39,6 +39,7 @@ function App() {
     if(gameStarted) {
       handleAnimations(true);
 
+      setJumpAnimation(false);
       setLifes(3);
       setScore(0);
       const interval = setInterval(updateScore, 10);
@@ -236,7 +237,7 @@ function App() {
         <img src={lifes === 3 ? heart : heartBroken} alt="Coração" className='heart heart3' />
       </div>
       {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
-      <img src={floorImg} alt="chão" className='floor' />
+      <img src={floor} alt="chão" className='floor' />
       <img className='runner' src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
       <img className='ball' src={ball} alt="Ball" />
     </section>
