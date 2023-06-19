@@ -28,8 +28,8 @@ function App() {
   const [ gameStarted, setGameStarted ] = useState(false);
   const [ collision, setCollision ] = useState(false);
   const [ score, setScore ] = useState(0);
-  const [ lifes, setLifes ] = useState(3);
-  const [ selectedDifficulty, setSelectedDifficulty ] = useState(1);
+  const [ lifes, setLifes ] = useState(5);
+  const [ selectedDifficulty, setSelectedDifficulty ] = useState(2);
   const [ selectedCharacter, setSelectedCharacter ] = useState(1);
   const [ popupConfig, setPopupConfig ] = useState(false);
 
@@ -37,9 +37,16 @@ function App() {
     console.log(gameStarted)
     if(gameStarted) {
       handleAnimations(true);
-
       setJumpAnimation(false);
-      setLifes(3);
+
+      if(selectedDifficulty === 1) {
+        setLifes(5);
+      } else if (selectedDifficulty === 2) {
+        setLifes(3);
+      } else if (selectedDifficulty === 3) {
+        setLifes(1);
+      }
+
       setScore(0);
       const interval = setInterval(updateScore, 10);
       return () => clearInterval(interval);
@@ -231,9 +238,11 @@ function App() {
         <span className='score'>Score: {score}</span>
       </div>
       <div className='heart-container'>
-        <img src={lifes >= 1 ? heart : heartBroken} alt="Coração" className='heart heart1' />
-        <img src={lifes >= 2 ? heart : heartBroken} alt="Coração" className='heart heart2' />
-        <img src={lifes === 3 ? heart : heartBroken} alt="Coração" className='heart heart3' />
+        <img src={lifes >= 1 ? heart : heartBroken} alt="Coração" className='heart' />
+        {selectedDifficulty <= 2 && <img src={lifes >= 2 ? heart : heartBroken} alt="Coração" className='heart' />}
+        {selectedDifficulty <= 2 && <img src={lifes >= 3 ? heart : heartBroken} alt="Coração" className='heart' />}
+        {selectedDifficulty === 1 && <img src={lifes >= 4 ? heart : heartBroken} alt="Coração" className='heart' />}
+        {selectedDifficulty === 1 && <img src={lifes >= 5 ? heart : heartBroken} alt="Coração" className='heart' />}
       </div>
       {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
       <img src={floor} alt="chão" className='floor' />
