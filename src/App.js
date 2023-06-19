@@ -32,6 +32,7 @@ function App() {
   const [ selectedDifficulty, setSelectedDifficulty ] = useState(2);
   const [ selectedCharacter, setSelectedCharacter ] = useState(1);
   const [ popupConfig, setPopupConfig ] = useState(false);
+  const [isTakingDamage, setIsTakingDamage] = useState(false);
 
   const ballRef = useRef(null);
   const floorRef = useRef(null);
@@ -132,13 +133,23 @@ function App() {
 
   useEffect(() => {
     const runnerCharacter = runnerRef.current;
+    if(isTakingDamage) {
+      runnerCharacter.style.opacity = '0.75';
+      const blinkTimer = setTimeout(() => {
+        setIsTakingDamage(false);
+        runnerCharacter.style.opacity = '1';
+      }, 250);
+
+      return () => clearTimeout(blinkTimer);
+    }
+  }, [isTakingDamage]);
+
+  useEffect(() => {
+    const runnerCharacter = runnerRef.current;
     if(collision) {
       if(lifes >= 2) {
         setLifes((prevLifes) => prevLifes - 1);
-        runnerCharacter.classList.add('damage-animation');
-        runnerCharacter.addEventListener('animationend', () => {
-          runnerCharacter.classList.remove('damage-animation');
-        })
+        setIsTakingDamage(true);
 
         setTimeout(() => {
           setCollision(false);
