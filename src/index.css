@@ -123,6 +123,10 @@ body {
   z-index: 1000;
 }
 
+.damage-animation {
+  animation: set-damage 0.5s;
+}
+
 .form-options {
   position: absolute;
   background: url('./public/img/options.png') no-repeat;
@@ -346,7 +350,7 @@ input[type="radio"] {
   }
 
   50% {
-    opacity: 0.5;
+    opacity: 0.25;
   }
 
   75% {

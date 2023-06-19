@@ -128,10 +128,20 @@ function App() {
     }
   }
 
+  const handleDamage = () => {
+    const runnerCharacter = document.querySelector('.runner');
+
+    runnerCharacter.classList.add('damage-animation');
+    runnerCharacter.addEventListener('animationend', () => {
+      runnerCharacter.classList.remove('damage-animation');
+    })
+  }
+
   useEffect(() => {
     const runnerCharacter = document.querySelector('.runner');
     if(collision) {
       if(lifes >= 2) {
+        handleDamage();
         setLifes((prevLifes) => prevLifes - 1);
         setTimeout(() => {
           setCollision(false);
