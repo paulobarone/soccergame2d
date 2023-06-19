@@ -21,7 +21,7 @@ import clouds7 from './public/img/clouds/7.png';
 import clouds8 from './public/img/clouds/8.png';
 import clouds9 from './public/img/clouds/9.png';
 import clouds10 from './public/img/clouds/10.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function App() {
   const [ jumpAnimation, setJumpAnimation] = useState(false);
@@ -32,6 +32,12 @@ function App() {
   const [ selectedDifficulty, setSelectedDifficulty ] = useState(2);
   const [ selectedCharacter, setSelectedCharacter ] = useState(1);
   const [ popupConfig, setPopupConfig ] = useState(false);
+
+  const ballRef = useRef(null);
+  const floorRef = useRef(null);
+  const runnerRef = useRef(null);
+  const clouds1Ref = useRef(null);
+  const clouds2Ref = useRef(null);
 
   useEffect(() => {
     console.log(gameStarted)
@@ -68,14 +74,14 @@ function App() {
   }
   
   const handleAnimations = (event) => {
-    const ball = document.querySelector('.ball');
-    const floor = document.querySelector('.floor');
-    const clouds1 = document.querySelector('.clouds-container1');
-    const clouds2 = document.querySelector('.clouds-container2');
+    const ball = ballRef.current;
+    const floor = floorRef.current;
+    const clouds1 = clouds1Ref.current;
+    const clouds2 = clouds2Ref.current;
+    const runnerCharacter = runnerRef.current;
     const floorPosition = window.getComputedStyle(floor).transform;
     const clouds1Position = window.getComputedStyle(clouds1).transform;
     const clouds2Position = window.getComputedStyle(clouds2).transform;
-    const runnerCharacter = document.querySelector('.runner');
 
     if(event) {
       runnerCharacter.src = selectedCharacter === 1 ? runnerKadu : runnerPedro;
@@ -101,7 +107,7 @@ function App() {
   }
 
   useEffect(() => {
-    const runnerCharacter = document.querySelector('.runner');
+    const runnerCharacter = runnerRef.current;
     if(jumpAnimation) {
       runnerCharacter.addEventListener('animationend', () => {
         runnerCharacter.classList.remove('jump');
@@ -111,38 +117,29 @@ function App() {
   }, [jumpAnimation])
 
   useEffect(() => {
-    checkCollision();
-  }, [score]);
-
-  const checkCollision = () => {
-    const ball = document.querySelector('.ball');
+    const ball = ballRef.current;
+    const runnerCharacter = runnerRef.current;
     const ballTop = ball.offsetTop;
     const ballLeft = ball.offsetLeft;
 
-    const runnerCharacter = document.querySelector('.runner');
     const runnerCharacterBottom = runnerCharacter.offsetTop + runnerCharacter.offsetHeight;
     const runnerCharacterRight = runnerCharacter.offsetLeft + runnerCharacter.offsetWidth;
 
     if(runnerCharacterBottom >= ballTop && runnerCharacterRight >= ballLeft) {
       setCollision(true);
     }
-  }
-
-  const handleDamage = () => {
-    const runnerCharacter = document.querySelector('.runner');
-
-    runnerCharacter.classList.add('damage-animation');
-    runnerCharacter.addEventListener('animationend', () => {
-      runnerCharacter.classList.remove('damage-animation');
-    })
-  }
+  }, [score]);
 
   useEffect(() => {
-    const runnerCharacter = document.querySelector('.runner');
+    const runnerCharacter = runnerRef.current;
     if(collision) {
       if(lifes >= 2) {
-        handleDamage();
         setLifes((prevLifes) => prevLifes - 1);
+        runnerCharacter.classList.add('damage-animation');
+        runnerCharacter.addEventListener('animationend', () => {
+          runnerCharacter.classList.remove('damage-animation');
+        })
+
         setTimeout(() => {
           setCollision(false);
         }, 500);
@@ -159,7 +156,7 @@ function App() {
 
   useEffect(() => {
     const handleJump = (event) => {
-      const runnerCharacter = document.querySelector('.runner');
+      const runnerCharacter = runnerRef.current;
       if (gameStarted && !jumpAnimation && event.code === 'Space') {
         runnerCharacter.classList.add('jump');
         setJumpAnimation(true);
@@ -177,14 +174,6 @@ function App() {
     setScore((prevScore) => prevScore + 1);
   }
 
-  const handleSelectedDifficulty = (data) => {
-    setSelectedDifficulty(data)
-  }
-
-  const handleSelectedCharacter = (data) => {
-    setSelectedCharacter(data);
-  }
-
   return (
     <section className="game-container">
       {!gameStarted && popupConfig && 
@@ -194,15 +183,15 @@ function App() {
           <div className='values-container'>
             <div className='radio-container'>
               <label htmlFor='easy' className={`label ${selectedDifficulty === 1 ? 'selected' : ''}`}>Fácil</label>
-              <input type='radio' name='difficulty' id="easy" onChange={() => handleSelectedDifficulty(1)} />
+              <input type='radio' name='difficulty' id="easy" onChange={() => setSelectedDifficulty(1)} />
             </div>
             <div className='radio-container'>
               <label htmlFor='normal' className={`label ${selectedDifficulty === 2 ? 'selected' : ''}`}>Normal</label>
-              <input type='radio' name='difficulty' id="normal" onChange={() => handleSelectedDifficulty(2)} />
+              <input type='radio' name='difficulty' id="normal" onChange={() => setSelectedDifficulty(2)} />
             </div>
             <div className='radio-container'>
               <label htmlFor='hard' className={`label ${selectedDifficulty === 3 ? 'selected' : ''}`}>Hard</label>
-              <input type='radio' name='difficulty' id="hard" onChange={() => handleSelectedDifficulty(3)} />
+              <input type='radio' name='difficulty' id="hard" onChange={() => setSelectedDifficulty(3)} />
             </div>
           </div>
         </div>
@@ -214,28 +203,28 @@ function App() {
               <label htmlFor='kadu' className='label'>
                 <img src={runnerKadu} alt="Runner Kadu" className={`runnerSelected ${selectedCharacter === 1 ? 'selected-character' : ''}`} />
               </label>
-              <input type='radio' name='character' id="kadu" onChange={() => handleSelectedCharacter(1)} />
+              <input type='radio' name='character' id="kadu" onChange={() => setSelectedCharacter(1)} />
             </div>
             <div className='character-container'>
               <label htmlFor='pedro' className={`label ${selectedCharacter === 2 ? 'selected' : ''}`}>Pedro</label>
               <label htmlFor='pedro' className='label'>
                 <img src={runnerPedro} alt="Runner Kadu" className={`runnerSelected ${selectedCharacter === 2 ? 'selected-character' : ''}`} />
               </label>
-              <input type='radio' name='character' id="pedro" onChange={() => handleSelectedCharacter(2)} />
+              <input type='radio' name='character' id="pedro" onChange={() => setSelectedCharacter(2)} />
             </div>
           </div>
         </div>
         <img src={submitButton} alt="Enviar" className='submit-button' onClick={() => setPopupConfig(false)} />
       </form>}
       <div className="sky">
-        <div className='clouds-container1'>
+        <div className='clouds-container1' ref={clouds1Ref}>
           <img className='clouds clouds1' src={clouds1} alt="nuvem" />
           <img className='clouds clouds2' src={clouds2} alt="nuvem" />
           <img className='clouds clouds3' src={clouds3} alt="nuvem" />
           <img className='clouds clouds4' src={clouds4} alt="nuvem" />
           <img className='clouds clouds5' src={clouds5} alt="nuvem" />
         </div>
-        <div className='clouds-container2'>
+        <div className='clouds-container2' ref={clouds2Ref}>
           <img className='clouds clouds6' src={clouds6} alt="nuvem" />
           <img className='clouds clouds7' src={clouds7} alt="nuvem" />
           <img className='clouds clouds8' src={clouds8} alt="nuvem" />
@@ -255,9 +244,9 @@ function App() {
         {selectedDifficulty === 1 && <img src={lifes >= 5 ? heart : heartBroken} alt="Coração" className='heart' />}
       </div>
       {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
-      <img src={floor} alt="chão" className='floor' />
-      <img className='runner' src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
-      <img className='ball' src={ball} alt="Ball" />
+      <img src={floor} ref={floorRef} alt="chão" className='floor' />
+      <img className='runner' ref={runnerRef} src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
+      <img className='ball' ref={ballRef} src={ball} alt="Ball" />
     </section>
   );
 }
