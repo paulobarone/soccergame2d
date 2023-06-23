@@ -204,7 +204,7 @@ function App() {
               <input type='radio' name='difficulty' id="normal" onChange={() => setSelectedDifficulty(2)} />
             </div>
             <div className='radio-container'>
-              <label htmlFor='hard' className={`label ${selectedDifficulty === 3 ? 'selected' : ''}`}>Hard</label>
+              <label htmlFor='hard' className={`label ${selectedDifficulty === 3 ? 'selected' : ''}`}>Difícil</label>
               <input type='radio' name='difficulty' id="hard" onChange={() => setSelectedDifficulty(3)} />
             </div>
           </div>
