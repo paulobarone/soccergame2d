@@ -32,7 +32,8 @@ function App() {
   const [ selectedDifficulty, setSelectedDifficulty ] = useState(2);
   const [ selectedCharacter, setSelectedCharacter ] = useState(1);
   const [ popupConfig, setPopupConfig ] = useState(false);
-  const [isTakingDamage, setIsTakingDamage] = useState(false);
+  const [ isTakingDamage, setIsTakingDamage ] = useState(false);
+  const [ tutorialJump, setTutorialJump ] = useState(true);
 
   const ballRef = useRef(null);
   const floorRef = useRef(null);
@@ -169,6 +170,7 @@ function App() {
     const handleJump = (event) => {
       const runnerCharacter = runnerRef.current;
       if (gameStarted && !jumpAnimation && event.code === 'Space') {
+        tutorialJump && setTutorialJump(false);
         runnerCharacter.classList.add('jump');
         setJumpAnimation(true);
       }
@@ -179,6 +181,7 @@ function App() {
     return () => {
       document.removeEventListener('keydown', handleJump);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStarted, jumpAnimation]);
 
   const updateScore = () => {
@@ -254,6 +257,7 @@ function App() {
         {selectedDifficulty === 1 && <img src={lifes >= 4 ? heart : heartBroken} alt="Coração" className='heart' />}
         {selectedDifficulty === 1 && <img src={lifes >= 5 ? heart : heartBroken} alt="Coração" className='heart' />}
       </div>
+      {tutorialJump && gameStarted && <span className='tutorial'>Pressione espaço para pular!</span>}
       {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
       <img src={floor} ref={floorRef} alt="chão" className='floor' />
       <img className='runner' ref={runnerRef} src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
