@@ -11,6 +11,7 @@ import submitButton from './public/img/submit.png';
 import configImg from './public/img/config.png';
 import heart from './public/img/heart.png';
 import heartBroken from './public/img/heart-broken.png';
+import useWindowWidth from './hooks/useWindowWidth'
 import clouds1 from './public/img/clouds/1.png';
 import clouds2 from './public/img/clouds/2.png';
 import clouds3 from './public/img/clouds/3.png';
@@ -34,7 +35,7 @@ function App() {
   const [ popupConfig, setPopupConfig ] = useState(false);
   const [ isTakingDamage, setIsTakingDamage ] = useState(false);
   const [ tutorialJump, setTutorialJump ] = useState(true);
-
+  const windowWidth = useWindowWidth()
   const ballRef = useRef(null);
   const floorRef = useRef(null);
   const runnerRef = useRef(null);
@@ -42,7 +43,6 @@ function App() {
   const clouds2Ref = useRef(null);
 
   useEffect(() => {
-    console.log(gameStarted)
     if(gameStarted) {
       handleAnimations(true);
       setJumpAnimation(false);
@@ -87,8 +87,8 @@ function App() {
 
     if(event) {
       runnerCharacter.src = selectedCharacter === 1 ? runnerKadu : runnerPedro;
-      runnerCharacter.style.left = '80px';
-      runnerCharacter.style.width = '150px';
+      // runnerCharacter.style.left = '80px';
+      // runnerCharacter.style.width = '150px';
 
       ball.classList.add('ball-animation');
       handleDifficulty(ball);
@@ -158,8 +158,8 @@ function App() {
       } else {
         setLifes(0);
         runnerCharacter.src = selectedCharacter === 1 ? deadKadu : deadPedro;
-        runnerCharacter.style.left = '120px';
-        runnerCharacter.style.width = '110px';
+        // runnerCharacter.style.left = '120px';
+        // runnerCharacter.style.width = '110px';
         setGameStarted(false);
       }
     }
@@ -167,19 +167,23 @@ function App() {
   }, [collision]);
 
   useEffect(() => {
-    const handleJump = (event) => {
+    const handleJump = () => {
       const runnerCharacter = runnerRef.current;
-      if (gameStarted && !jumpAnimation && event.code === 'Space') {
+      if (gameStarted && !jumpAnimation) {
         tutorialJump && setTutorialJump(false);
         runnerCharacter.classList.add('jump');
         setJumpAnimation(true);
       }
     };
 
-    document.addEventListener('keydown', handleJump);
+    setTimeout(() => {
+      document.addEventListener('keydown', handleJump);
+      document.addEventListener('click', handleJump); 
+    }, 10);
 
     return () => {
       document.removeEventListener('keydown', handleJump);
+      document.removeEventListener('click', handleJump)
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameStarted, jumpAnimation]);
@@ -248,16 +252,16 @@ function App() {
       </div>
       <div className='container'>
         {!gameStarted && <img src={configImg} onClick={() => setPopupConfig((prevPopup) => !prevPopup)} alt='Configurações' className='config' />}
-        <span className='score'>Score: {score}</span>
+        {gameStarted && <span className='score'>Score: {score}</span>}
       </div>
-      <div className='heart-container'>
+      {lifes > 0 && <div className='heart-container'>
         <img src={lifes >= 1 ? heart : heartBroken} alt="Coração" className='heart' />
         {selectedDifficulty <= 2 && <img src={lifes >= 2 ? heart : heartBroken} alt="Coração" className='heart' />}
         {selectedDifficulty <= 2 && <img src={lifes >= 3 ? heart : heartBroken} alt="Coração" className='heart' />}
         {selectedDifficulty === 1 && <img src={lifes >= 4 ? heart : heartBroken} alt="Coração" className='heart' />}
         {selectedDifficulty === 1 && <img src={lifes >= 5 ? heart : heartBroken} alt="Coração" className='heart' />}
-      </div>
-      {tutorialJump && gameStarted && <span className='tutorial'>Pressione espaço para pular!</span>}
+      </div>}
+      {tutorialJump && gameStarted && <span className='tutorial'>{windowWidth > 1024 ? 'Pressione alguma tecla para pular!' : 'Toque na tela para pular!'}</span>}
       {!gameStarted && !popupConfig && <img className='start-button' onClick={() => setGameStarted(true)} src={startButton} alt='Botão de iniciar' />}
       <img src={floor} ref={floorRef} alt="chão" className='floor' />
       <img className='runner' ref={runnerRef} src={selectedCharacter === 1 ? stayKadu : stayPedro} alt="Runner" />
